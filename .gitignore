@@ -1,0 +1,13 @@
+/public/bundles/
+var/*
+vendor/*
+vendor/cache/dev/*
+/.idea
+/nbproject
+volumes/*
+private.key
+public.key
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###
+.env

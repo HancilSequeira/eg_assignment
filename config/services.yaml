@@ -1,0 +1,69 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'en'
+    env(MONGODB_URL): ''
+    env(MONGODB_DB): ''
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+        
+    get_set_method_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        public: false
+        tags: [serializer.normalizer]
+        
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\Modules\:
+        resource: '../src/Modules/*'
+        public: true
+    
+    
+    App\Repository\MyClassRepository:
+        tags: ['doctrine.repository_service']
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+   # App\Controller\:
+    #    resource: '../src/Controller'
+     #   tags: ['controller.service_arguments']
+    
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    
+    App\Utilities\UtilityContainer:
+       class: App\Utilities\UtilityContainer
+       public: true
+    logger_service:
+        class: App\Utilities\MonologServiceProvider
+        public: true
+    response_handler:
+        class: App\Utilities\ResponseHandler
+        public: true    
+    dto_validator_service:
+        class: App\Utilities\ValidatorService
+        public: true
+    helper_service:
+        class: App\Utilities\HelperService
+        public: true
+    validator_service:
+        class: App\Utilities\ValidatorService
+        public: true
+    error_dto:
+        class: App\Utilities\DTO\Errors
+        public: true
+        
+imports:
+    - { resource: config_param.yaml }
+    - { resource: languages.yaml }

@@ -1,0 +1,6 @@
+# All translations are handled here
+# latest it will be handled using Symfony library
+parameters:
+    LANG_GET_ALL_EXCEPTION: Exception while getting all data.
+    LANG_VALIDATE_EXCEPTION: Exception while validating request.
+    LANG_INTERNAL_SERVER_ERROR: Internal server error.
